@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+ --t-pri:#00796B; --t-sec:#26A69A; --t-fill:#E0F2F1; --t-acc:#FF7043;
+ --p-pri:#5E35B1; --p-sec:#9575CD; --p-fill:#EDE7F6; --p-acc:#FFB300;
+ --ink:#263238; --bg:#FAFAFA; --green:#43A047; --white:#FFFFFF;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:'Nunito',Verdana,sans-serif; background:var(--bg); color:var(--ink); min-height:100vh;}
+h1,h2,h3,.btn{font-family:'Fredoka','Comic Sans MS',sans-serif;}
+.wrap{max-width:860px; margin:0 auto; padding:24px 16px 60px;}
+.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;}
+.topbar h1{color:var(--t-pri); font-size:2rem;}
+.pill{background:var(--t-pri); color:var(--white); border-radius:999px; padding:6px 14px; font-weight:800; font-size:.75rem; letter-spacing:.05em;}
+.pill.purple{background:var(--p-pri);} .pill.gold{background:var(--p-acc); color:var(--ink);}
+.card{background:var(--t-fill); border-radius:16px; padding:20px; margin-bottom:14px;}
+.card.purple{background:var(--p-fill);}
+.intro{font-size:1.05rem; margin-bottom:20px;}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px;}
+.topic{background:var(--t-fill); border:none; border-radius:16px; padding:18px; text-align:left; cursor:pointer; transition:transform .12s;}
+.topic:hover{transform:translateY(-3px);}
+.topic .emoji{font-size:1.8rem;}
+.topic h3{color:var(--t-pri); margin:6px 0 4px; font-size:1.05rem;}
+.topic p{font-size:.85rem;}
+.topic .done{color:var(--green); font-weight:800; font-size:.8rem; margin-top:6px;}
+.progress{display:flex; gap:6px; margin:14px 0;}
+.dot{width:12px; height:12px; border-radius:50%; background:#CFD8DC;}
+.dot.on{background:var(--t-pri);} .dot.on.purple{background:var(--p-pri);}
+.dot.right{background:var(--green);} .dot.wrong{background:var(--t-acc);}
+.qhead{font-size:.85rem; font-weight:800; letter-spacing:.04em; margin-bottom:6px;}
+.qhead.teal{color:var(--t-pri);} .qhead.purple{color:var(--p-pri);}
+.question{font-size:1.2rem; font-weight:700; margin-bottom:16px; line-height:1.5;}
+.opts{display:grid; gap:10px;}
+.opt{background:var(--white); border:2px solid #ECEFF1; border-radius:12px; padding:13px 16px; font-size:1rem; font-family:'Nunito',Verdana,sans-serif; text-align:left; cursor:pointer; transition:border .12s;}
+.opt:hover{border-color:var(--t-sec);}
+.opt.picked-right{border-color:var(--green); background:#E8F5E9; font-weight:800;}
+.opt.picked-wrong{border-color:var(--t-acc); background:#FBE9E7;}
+.opt.reveal{border-color:var(--green); background:#E8F5E9;}
+.opt:disabled{cursor:default; opacity:.92;}
+.why{border-radius:12px; padding:14px 16px; margin-top:14px; font-size:.98rem; display:none;}
+.why.good{background:#E8F5E9; border-left:6px solid var(--green);}
+.why.oops{background:#FFF3E0; border-left:6px solid var(--t-acc);}
+.btn{border:none; border-radius:999px; padding:12px 28px; font-size:1.05rem; font-weight:600; cursor:pointer; color:var(--white); background:var(--t-pri); margin-top:16px;}
+.btn.purple{background:var(--p-pri);} .btn.ghost{background:#B0BEC5;}
+.btn:hover{filter:brightness(1.08);}
+.center{text-align:center;}
+.levelup{background:linear-gradient(120deg,var(--t-pri) 0%,var(--t-pri) 34%,var(--p-pri) 34%,var(--p-pri) 100%); border-radius:20px; color:var(--white); padding:56px 24px; text-align:center;}
+.levelup h2{font-size:2.6rem; letter-spacing:.02em;}
+.levelup p{margin-top:10px; font-size:1.05rem; color:#E1D5F5;}
+.stars{font-size:2rem; letter-spacing:.2em; margin:10px 0; color:var(--p-acc);}
+.score-big{font-family:'Fredoka'; font-size:3.2rem; color:var(--p-pri);}
+.footer-note{font-size:.78rem; color:#78909C; margin-top:34px; text-align:center;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+"use strict";
+/* GRAMMAR QUEST: original practice questions written for this course.
+   Topic coverage follows the unit list of Wren and Martin,
+   Primary School English Grammar and Composition. */
+
+const TOPICS = [
+{id:"nouns", emoji:"🏷️", name:"Nouns", blurb:"Naming words: kinds, plurals and apostrophes",
+ y4:[
+ {q:"Which word in this sentence is a noun? “The kookaburra laughed loudly from the gum tree.”",
+  o:["laughed","loudly","kookaburra","from"], a:2,
+  w:"A noun is a naming word. Kookaburra names an animal (and gum tree is a noun too!)."},
+ {q:"Which word needs a capital letter? “We flew to sydney on Friday.”",
+  o:["flew","sydney","on","Friday is the only one"], a:1,
+  w:"Sydney is a proper noun, the special name of a place, so it always gets a capital."},
+ {q:"What is the plural of child?",
+  o:["childs","childes","children","childrens"], a:2,
+  w:"Child is an irregular noun: one child, two children. No s needed!"},
+ {q:"Pick the collective noun: a ___ of bees.",
+  o:["flock","swarm","herd","school"], a:1,
+  w:"A swarm of bees. Flocks are for birds or sheep, herds for cattle, schools for fish."},
+ {q:"One mouse, two ___.",
+  o:["mouses","mice","mices","mouse"], a:1,
+  w:"Mouse changes completely in the plural: mice. English likes to keep us on our toes."}],
+ y5:[
+ {q:"The bowl belongs to two dogs. Which is correct?",
+  o:["the dog's bowl","the dogs' bowl","the dogss bowl","the dogs bowl"], a:1,
+  w:"More than one dog, so the apostrophe goes AFTER the s: the dogs' bowl."},
+ {q:"Find the abstract noun: “Her kindness surprised everyone at training.”",
+  o:["Her","kindness","surprised","training"], a:1,
+  w:"Kindness names something you cannot touch or see: an idea or quality. That makes it abstract."},
+ {q:"The library belongs to the children. Which is correct?",
+  o:["the childrens' library","the children's library","the childrens library","the children library's"], a:1,
+  w:"Children is already plural, so the apostrophe plus s goes straight on: children's."}]},
+
+{id:"pronouns", emoji:"👉", name:"Pronouns", blurb:"Words that stand in for nouns",
+ y4:[
+ {q:"Choose the pronoun: “Maya lost ___ hat at the beach.”",
+  o:["she","her","hers","herself"], a:1,
+  w:"Her works before a noun: her hat. Hers stands alone: the hat is hers."},
+ {q:"Which is correct?",
+  o:["Tom and me went fishing.","Tom and I went fishing.","Me and Tom goes fishing.","I and Tom went fishing."], a:1,
+  w:"Test it by removing Tom: “I went fishing” sounds right, “me went fishing” does not."},
+ {q:"Choose the demonstrative pronoun: “___ shoes over there are muddy.”",
+  o:["This","That","Those","These here"], a:2,
+  w:"Over there means far away and shoes is plural, so those is the match."},
+ {q:"Choose the question word: “___ is knocking at the door?”",
+  o:["Whom","Who","Whose","Which one of"], a:1,
+  w:"Who asks about a person doing the action. Whose asks about owning something."},
+ {q:"Which is correct? “The dog wagged ___ tail.”",
+  o:["it's","its","its'","it is"], a:1,
+  w:"Its (no apostrophe) means belonging to it. It's always means it is."}],
+ y5:[
+ {q:"Choose the reflexive pronoun: “She taught ___ to juggle.”",
+  o:["her","she","herself","hers"], a:2,
+  w:"The action bounces back to the doer, so we need the -self form: herself."},
+ {q:"Choose the relative pronoun: “The boy ___ won the race is my cousin.”",
+  o:["which","who","what","whom the"], a:1,
+  w:"Who relates back to a person (the boy) and joins the two ideas into one sentence."},
+ {q:"Which is correct? “___ jumper is this on the oval?”",
+  o:["Who's","Whose","Whos","Who is"], a:1,
+  w:"Whose asks about belonging. Who's is short for who is, which makes no sense here."}]},
+
+{id:"adjectives", emoji:"🎨", name:"Adjectives & Articles", blurb:"Describing words, a, an and the",
+ y4:[
+ {q:"Find the adjective: “The enormous crocodile slid into the muddy river.”",
+  o:["crocodile","slid","enormous","river"], a:2,
+  w:"Enormous describes the crocodile (and muddy describes the river, two adjectives in one sentence!)."},
+ {q:"Choose the article: “We spotted ___ emu near the fence.”",
+  o:["a","an","two an","the an"], a:1,
+  w:"Emu starts with a vowel SOUND, so it takes an: an emu, an apple, an hour."},
+ {q:"Tall, taller, ___?",
+  o:["tallerer","most tall","tallest","more taller"], a:2,
+  w:"Short adjectives add -est for the top level: tallest."},
+ {q:"Good, better, ___?",
+  o:["goodest","bestest","best","most good"], a:2,
+  w:"Good is irregular: good, better, best. No goodest, ever!"},
+ {q:"Choose correctly: “This mango is sweeter than ___ one.”",
+  o:["those","these","that","them"], a:2,
+  w:"One mango, sitting further away: that one. Those and these go with plurals."}],
+ y5:[
+ {q:"Choose the articles: “I saw ___ echidna at the park. ___ echidna was digging.”",
+  o:["a / A","an / The","the / An","an / A"], a:1,
+  w:"First mention: an echidna (any echidna). Second mention: The echidna (now we know which one)."},
+ {q:"Spot the error: “She is the most kindest teacher in the school.”",
+  o:["should be “most kind est”","should be “kindest” (drop most)","should be “more kindest”","no error"], a:1,
+  w:"Never double up: most kindest uses two superlatives. Kindest does the whole job alone."},
+ {q:"Little, less, ___?",
+  o:["littlest","lesser","least","most less"], a:2,
+  w:"Little is irregular when it means amount: little, less, least."}]},
+
+{id:"verbs", emoji:"⚡", name:"Verbs & Tenses", blurb:"Doing words and their time travel",
+ y4:[
+ {q:"Find the verb: “The pelican gobbled the fish in one gulp.”",
+  o:["pelican","gobbled","fish","gulp"], a:1,
+  w:"Gobbled is the doing word: it tells us what the pelican did."},
+ {q:"“Yesterday we ___ to the pool.”",
+  o:["go","goes","went","will go"], a:2,
+  w:"Yesterday sends the sentence into the past, and go has an irregular past: went."},
+ {q:"Choose the be verb: “They ___ excited about camp.”",
+  o:["is","am","are","be"], a:2,
+  w:"They is plural, so it pairs with are. I am, he is, they are."},
+ {q:"“Tomorrow I ___ visit Nan.”",
+  o:["will","did","was","am"], a:0,
+  w:"Tomorrow means future, and will is our future-tense helper."},
+ {q:"“Look! The joey ___ jumping!”",
+  o:["are","is","were","be"], a:1,
+  w:"One joey, happening right now: is jumping. That is the present continuous tense."}],
+ y5:[
+ {q:"“She ___ already finished her homework.”",
+  o:["have","has","is","did"], a:1,
+  w:"Present perfect: has plus finished. She is one person, so has, not have."},
+ {q:"In “Ben kicked the ball”, kicked is a transitive verb because...",
+  o:["it happened in the past","it has an object (the ball)","Ben is a proper noun","it is a short word"], a:1,
+  w:"Transitive verbs pass their action onto an object. The ball receives the kick."},
+ {q:"“The box of mangoes ___ heavy.”",
+  o:["are","were","is","be"], a:2,
+  w:"The real subject is the box (one box), not the mangoes. So: the box is heavy. Sneaky!"}]},
+
+{id:"adverbs", emoji:"🚀", name:"Adverbs", blurb:"Words that describe the doing",
+ y4:[
+ {q:"Find the adverb: “The brumby galloped swiftly across the plain.”",
+  o:["brumby","galloped","swiftly","plain"], a:2,
+  w:"Swiftly tells us HOW the brumby galloped. Adverbs often (not always) end in -ly."},
+ {q:"“We will leave soon.” What kind of adverb is soon?",
+  o:["manner (how)","place (where)","time (when)","degree (how much)"], a:2,
+  w:"Soon answers WHEN we will leave, so it is an adverb of time."},
+ {q:"“The kids played outside.” What kind of adverb is outside?",
+  o:["manner","place","time","degree"], a:1,
+  w:"Outside answers WHERE they played: an adverb of place."},
+ {q:"Turn quiet into an adverb:",
+  o:["quieter","quietly","quietest","quietness"], a:1,
+  w:"Add -ly: quietly. Quietness is a noun, quieter is comparing."},
+ {q:"“The water was very cold.” What is very doing?",
+  o:["describing the water","telling us how cold","naming something","joining two ideas"], a:1,
+  w:"Very is an adverb of degree: it turns the volume up on cold."}],
+ y5:[
+ {q:"Well, better, ___?",
+  o:["weller","goodest","best","most well"], a:2,
+  w:"Well borrows the same irregular family as good: well, better, best."},
+ {q:"Choose the interrogative adverb: “___ did you get here so fast?”",
+  o:["What","How","Who","Which"], a:1,
+  w:"How asks about the manner of doing. What and who ask about things and people."},
+ {q:"Spot the error: “She sings good.”",
+  o:["should be “She sing good”","should be “She sings well”","should be “She sings goodly”","no error"], a:1,
+  w:"Good describes nouns; well describes verbs. She is a good singer who sings well."}]},
+
+{id:"preps", emoji:"🔗", name:"Prepositions & Conjunctions", blurb:"Position words and joining words",
+ y4:[
+ {q:"“The cat hid ___ the bed during the storm.”",
+  o:["under","on top","between","among"], a:0,
+  w:"Under tells the position: the cat is below the bed. Prepositions are position words."},
+ {q:"“Swimming lessons are ___ Monday.”",
+  o:["in","at","on","by"], a:2,
+  w:"Days take on: on Monday. Months and years take in: in March, in 2027."},
+ {q:"“I wanted to swim, ___ the pool was closed.”",
+  o:["and","but","so","or"], a:1,
+  w:"But joins two ideas that pull in opposite directions: wanting to swim, pool closed."},
+ {q:"“___ it was raining, we played inside.”",
+  o:["Because","But","Or","So that"], a:0,
+  w:"Because introduces the reason. The rain caused the inside play."},
+ {q:"“The ferry sails ___ Circular Quay ___ Manly.”",
+  o:["at / in","from / to","by / at","on / for"], a:1,
+  w:"From the start point to the end point. They work as a pair."}],
+ y5:[
+ {q:"Correct use: “She is really good ___ maths.”",
+  o:["in","on","at","with the"], a:2,
+  w:"Good at is the correct pairing: good at maths, good at cricket."},
+ {q:"Choose the correlative pair: “___ Zoe ___ her brother won medals.”",
+  o:["Either / nor","Both / and","Neither / or","Not / but also"], a:1,
+  w:"Both... and... is a matched pair (a correlative conjunction). The mismatched options break the pairs."},
+ {q:"“You must finish your reading ___ you can play.”",
+  o:["before","until when","but","nor"], a:0,
+  w:"Before puts the two events in time order: reading first, playing second."}]},
+
+{id:"sentences", emoji:"🧱", name:"Sentences", blurb:"Complete thoughts, subjects and predicates",
+ y4:[
+ {q:"Which one is a complete sentence?",
+  o:["Running down the hill.","The big red truck.","Emus cannot fly.","Because it was hot."], a:2,
+  w:"A sentence needs a subject and a verb and must make sense alone. “Emus cannot fly” ticks every box."},
+ {q:"What kind of sentence is “What a goal!”?",
+  o:["statement","question","command","exclamation"], a:3,
+  w:"It bursts with feeling and ends with an exclamation mark: exclamatory."},
+ {q:"What kind of sentence is “Please shut the gate.”?",
+  o:["statement","question","command","exclamation"], a:2,
+  w:"It tells someone to do something (politely!). That makes it a command, or imperative."},
+ {q:"Find the subject: “The old lighthouse flashed all night.”",
+  o:["flashed","all night","The old lighthouse","night"], a:2,
+  w:"The subject is who or what the sentence is about: the old lighthouse."},
+ {q:"Find the predicate: “Emus run fast.”",
+  o:["Emus","run fast","fast","Emus run"], a:1,
+  w:"The predicate is everything the subject does: run fast."}],
+ y5:[
+ {q:"“Each of the students ___ a library card.”",
+  o:["have","has","are having","were having"], a:1,
+  w:"Each is the real subject, and each is singular: each has. The students is just extra information."},
+ {q:"Best way to combine: “The rain stopped. We went outside.”",
+  o:["The rain stopped we went outside.","When the rain stopped, we went outside.","The rain stopped but outside.","We went outside the rain stopped."], a:1,
+  w:"A subordinating conjunction (when) plus a comma joins them smoothly into one complex sentence."},
+ {q:"“Could you pass the salt?” is which kind of sentence?",
+  o:["command","exclamation","question","statement"], a:2,
+  w:"It is shaped as a question (and ends with a question mark), even though it politely asks for action."}]},
+
+{id:"speech", emoji:"💬", name:"Speech & Voice", blurb:"Direct speech, reported speech, active and passive",
+ y4:[
+ {q:"Which is punctuated correctly?",
+  o:["“Lets go, said Ali.","“Let's go,” said Ali.","“let's go” said Ali.","Let's go,” said “Ali."], a:1,
+  w:"Quotation marks around the exact words, capital L, apostrophe in Let's, comma inside the quotation marks."},
+ {q:"Direct or reported? “Mum said dinner was ready.”",
+  o:["direct speech","reported speech","both","neither"], a:1,
+  w:"No quotation marks and the words are retold, not quoted: reported speech."},
+ {q:"Turn into direct speech: The coach said that training was cancelled.",
+  o:["“Training was cancelled,” said the coach.","“Training is cancelled,” said the coach.","The coach said training is cancelled.","“training is cancelled” said the coach"], a:1,
+  w:"In the coach's actual spoken words, was becomes is again, and the comma sits inside the quotation marks."},
+ {q:"Where does the question mark go? — Can we eat yet asked Mia",
+  o:["“Can we eat yet”? asked Mia.","“Can we eat yet?” asked Mia.","“Can we eat yet? asked Mia.”","Can we eat yet? “asked Mia.”"], a:1,
+  w:"The question mark belongs to the spoken words, so it lives inside the quotation marks."},
+ {q:"Pick the strongest speech verb for an excited crowd: “Goal!” they ___.",
+  o:["said","mentioned","roared","stated"], a:2,
+  w:"Roared carries the noise and excitement. Said is fine but flat; climb the word ladder!"}],
+ y5:[
+ {q:"“The window was broken by the ball.” This sentence is in the...",
+  o:["active voice","passive voice","future tense","command form"], a:1,
+  w:"The subject (window) receives the action instead of doing it. That is passive voice."},
+ {q:"Make it active: “The cake was eaten by Sam.”",
+  o:["Sam was eaten by the cake.","The cake ate Sam.","Sam ate the cake.","The cake was being eaten."], a:2,
+  w:"Put the doer first: Sam ate the cake. Shorter, stronger, clearer."},
+ {q:"Report this speech: “I am tired,” said Ben.",
+  o:["Ben said that he was tired.","Ben said that I am tired.","Ben says he is tired yesterday.","Ben said that he is being tired."], a:0,
+  w:"In reported speech, I becomes he and am slides back into was."}]}
+];
+
+let state={screen:"home", topic:null, level:"y4", idx:0, order:[], score:0, results:[], done:{}};
+const $=sel=>document.querySelector(sel);
+const app=$("#app");
+const shuffle=n=>{const a=[...Array(n).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+
+function home(){
+ state={...state, screen:"home", topic:null};
+ let cards=TOPICS.map(t=>{
+  const d=state.done[t.id];
+  return `<button class="topic" onclick="startTopic('${t.id}')">
+   <div class="emoji">${t.emoji}</div><h3>${t.name}</h3><p>${t.blurb}</p>
+   ${d?`<div class="done">Best: ${d.score} / ${d.total} ${"★".repeat(d.stars)}</div>`:""}
+  </button>`;}).join("");
+ app.innerHTML=`
+  <div class="topbar"><h1>Grammar Quest</h1><span class="pill gold">LEVEL UP GAME</span></div>
+  <p class="intro">Pick a topic and warm up in the <b style="color:var(--t-pri)">Year 4 zone</b>.
+  Get through the warm-up and you unlock the <b style="color:var(--p-pri)">Year 5 Level Up round</b>.
+  Every answer comes with a why, so even a miss makes you stronger.</p>
+  <div class="grid">${cards}</div>
+  <p class="footer-note">Topics follow the unit list of Wren &amp; Martin, Primary School English Grammar &amp; Composition. All questions written fresh for this course.</p>`;
+}
+
+function startTopic(id){
+ const t=TOPICS.find(x=>x.id===id);
+ state={...state, screen:"quiz", topic:t, level:"y4", idx:0, score:0, results:[], order:shuffle(t.y4.length)};
+ question();
+}
+
+function question(){
+ const t=state.topic, lv=state.level, bank=t[lv], q=bank[state.order[state.idx]];
+ const purple=lv==="y5";
+ const dots=state.results.map(r=>`<span class="dot ${r?"right":"wrong"}"></span>`).join("")+
+  bank.slice(state.results.length).map((_,i)=>`<span class="dot ${i===0?("on"+(purple?" purple":"")):""}"></span>`).join("");
+ app.innerHTML=`
+  <div class="topbar"><h1 style="color:${purple?"var(--p-pri)":"var(--t-pri)"}">${t.emoji} ${t.name}</h1>
+   <span class="pill ${purple?"purple":""}">${purple?"YEAR 5 LEVEL UP":"YEAR 4 ZONE"}</span></div>
+  <div class="progress">${dots}</div>
+  <div class="card ${purple?"purple":""}">
+   <div class="qhead ${purple?"purple":"teal"}">Question ${state.idx+1} of ${bank.length}</div>
+   <div class="question">${q.q}</div>
+   <div class="opts">${q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="pick(${i})">${o}</button>`).join("")}</div>
+   <div class="why" id="why"></div>
+   <div class="center"><button class="btn ${purple?"purple":""} hidden" id="next" onclick="next()">Next</button></div>
+  </div>
+  <div class="center"><button class="btn ghost" onclick="home()">Back to topics</button></div>`;
+}
+
+function pick(i){
+ const t=state.topic, bank=t[state.level], q=bank[state.order[state.idx]];
+ const right=i===q.a;
+ if(right)state.score++;
+ state.results.push(right);
+ q.o.forEach((_,k)=>{const b=$("#opt"+k); b.disabled=true;
+  if(k===i)b.classList.add(right?"picked-right":"picked-wrong");
+  if(k===q.a&&!right)b.classList.add("reveal");});
+ const why=$("#why");
+ why.className="why "+(right?"good":"oops");
+ why.style.display="block";
+ why.innerHTML=(right?"<b>Yes! ⭐</b> ":"<b>Nearly!</b> The answer is <b>"+q.o[q.a]+"</b>. ")+q.w;
+ $("#next").classList.remove("hidden");
+}
+
+function next(){
+ const bank=state.topic[state.level];
+ state.idx++;
+ if(state.idx<bank.length){question(); return;}
+ if(state.level==="y4"){levelUp(); return;}
+ finish();
+}
+
+function levelUp(){
+ const t=state.topic;
+ app.innerHTML=`
+  <div class="levelup">
+   <div class="stars">★ ★ ★</div>
+   <h2>LEVEL UP!</h2>
+   <p>Warm-up done: ${state.score} out of ${t.y4.length}. Now entering the Year 5 zone.</p>
+   <p>These ones are harder on purpose. Brave attempts only!</p>
+   <button class="btn purple" onclick="startY5()">Bring it on</button>
+  </div>`;
+}
+
+function startY5(){
+ state.level="y5"; state.idx=0; state.results=[]; state.order=shuffle(state.topic.y5.length);
+ question();
+}
+
+function finish(){
+ const t=state.topic, total=t.y4.length+t.y5.length, s=state.score;
+ const stars=s===total?3:(s>=total-2?2:1);
+ const msg=s===total?"Perfect round! You did not just answer, you OWNED it.":
+  s>=total-2?"So close to perfect. One more run and it is yours.":
+  s>=Math.ceil(total/2)?"Solid work! Read the whys, then have another crack.":
+  "Every miss taught you something. That is exactly how champions train. Go again!";
+ const prev=state.done[t.id];
+ if(!prev||s>prev.score)state.done[t.id]={score:s,total:total,stars:stars};
+ app.innerHTML=`
+  <div class="card purple center" style="padding:44px 24px;">
+   <div class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</div>
+   <div class="score-big">${s} / ${total}</div>
+   <h2 style="color:var(--p-pri); margin:10px 0;">${t.emoji} ${t.name} complete</h2>
+   <p style="max-width:480px; margin:0 auto;">${msg}</p>
+   <div>
+    <button class="btn purple" onclick="startTopic('${t.id}')">Play again</button>
+    <button class="btn" onclick="home()">Choose another topic</button>
+   </div>
+  </div>`;
+}
+home();
+</script>
+</body>
+</html>
