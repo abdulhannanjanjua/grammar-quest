@@ -65,287 +65,320 @@ h1,h2,h3,.btn{font-family:'Fredoka','Comic Sans MS',sans-serif;}
 "use strict";
 /* GRAMMAR QUEST: original practice questions written for this course.
    Topic coverage follows the unit list of Wren and Martin,
-   Primary School English Grammar and Composition. */
-
-const TOPICS = [
-{id:"nouns", emoji:"🏷️", name:"Nouns", blurb:"Naming words: kinds, plurals and apostrophes",
- y4:[
- {q:"Which word in this sentence is a noun? “The kookaburra laughed loudly from the gum tree.”",
-  o:["laughed","loudly","kookaburra","from"], a:2,
-  w:"A noun is a naming word. Kookaburra names an animal (and gum tree is a noun too!)."},
- {q:"Which word needs a capital letter? “We flew to sydney on Friday.”",
-  o:["flew","sydney","on","Friday is the only one"], a:1,
-  w:"Sydney is a proper noun, the special name of a place, so it always gets a capital."},
- {q:"What is the plural of child?",
-  o:["childs","childes","children","childrens"], a:2,
-  w:"Child is an irregular noun: one child, two children. No s needed!"},
- {q:"Pick the collective noun: a ___ of bees.",
-  o:["flock","swarm","herd","school"], a:1,
-  w:"A swarm of bees. Flocks are for birds or sheep, herds for cattle, schools for fish."},
- {q:"One mouse, two ___.",
-  o:["mouses","mice","mices","mouse"], a:1,
-  w:"Mouse changes completely in the plural: mice. English likes to keep us on our toes."}],
- y5:[
- {q:"The bowl belongs to two dogs. Which is correct?",
-  o:["the dog's bowl","the dogs' bowl","the dogss bowl","the dogs bowl"], a:1,
-  w:"More than one dog, so the apostrophe goes AFTER the s: the dogs' bowl."},
- {q:"Find the abstract noun: “Her kindness surprised everyone at training.”",
-  o:["Her","kindness","surprised","training"], a:1,
-  w:"Kindness names something you cannot touch or see: an idea or quality. That makes it abstract."},
- {q:"The library belongs to the children. Which is correct?",
-  o:["the childrens' library","the children's library","the childrens library","the children library's"], a:1,
-  w:"Children is already plural, so the apostrophe plus s goes straight on: children's."}]},
-
-{id:"pronouns", emoji:"👉", name:"Pronouns", blurb:"Words that stand in for nouns",
- y4:[
- {q:"Choose the pronoun: “Maya lost ___ hat at the beach.”",
-  o:["she","her","hers","herself"], a:1,
-  w:"Her works before a noun: her hat. Hers stands alone: the hat is hers."},
- {q:"Which is correct?",
-  o:["Tom and me went fishing.","Tom and I went fishing.","Me and Tom goes fishing.","I and Tom went fishing."], a:1,
-  w:"Test it by removing Tom: “I went fishing” sounds right, “me went fishing” does not."},
- {q:"Choose the demonstrative pronoun: “___ shoes over there are muddy.”",
-  o:["This","That","Those","These here"], a:2,
-  w:"Over there means far away and shoes is plural, so those is the match."},
- {q:"Choose the question word: “___ is knocking at the door?”",
-  o:["Whom","Who","Whose","Which one of"], a:1,
-  w:"Who asks about a person doing the action. Whose asks about owning something."},
- {q:"Which is correct? “The dog wagged ___ tail.”",
-  o:["it's","its","its'","it is"], a:1,
-  w:"Its (no apostrophe) means belonging to it. It's always means it is."}],
- y5:[
- {q:"Choose the reflexive pronoun: “She taught ___ to juggle.”",
-  o:["her","she","herself","hers"], a:2,
-  w:"The action bounces back to the doer, so we need the -self form: herself."},
- {q:"Choose the relative pronoun: “The boy ___ won the race is my cousin.”",
-  o:["which","who","what","whom the"], a:1,
-  w:"Who relates back to a person (the boy) and joins the two ideas into one sentence."},
- {q:"Which is correct? “___ jumper is this on the oval?”",
-  o:["Who's","Whose","Whos","Who is"], a:1,
-  w:"Whose asks about belonging. Who's is short for who is, which makes no sense here."}]},
-
-{id:"adjectives", emoji:"🎨", name:"Adjectives & Articles", blurb:"Describing words, a, an and the",
- y4:[
- {q:"Find the adjective: “The enormous crocodile slid into the muddy river.”",
-  o:["crocodile","slid","enormous","river"], a:2,
-  w:"Enormous describes the crocodile (and muddy describes the river, two adjectives in one sentence!)."},
- {q:"Choose the article: “We spotted ___ emu near the fence.”",
-  o:["a","an","two an","the an"], a:1,
-  w:"Emu starts with a vowel SOUND, so it takes an: an emu, an apple, an hour."},
- {q:"Tall, taller, ___?",
-  o:["tallerer","most tall","tallest","more taller"], a:2,
-  w:"Short adjectives add -est for the top level: tallest."},
- {q:"Good, better, ___?",
-  o:["goodest","bestest","best","most good"], a:2,
-  w:"Good is irregular: good, better, best. No goodest, ever!"},
- {q:"Choose correctly: “This mango is sweeter than ___ one.”",
-  o:["those","these","that","them"], a:2,
-  w:"One mango, sitting further away: that one. Those and these go with plurals."}],
- y5:[
- {q:"Choose the articles: “I saw ___ echidna at the park. ___ echidna was digging.”",
-  o:["a / A","an / The","the / An","an / A"], a:1,
-  w:"First mention: an echidna (any echidna). Second mention: The echidna (now we know which one)."},
- {q:"Spot the error: “She is the most kindest teacher in the school.”",
-  o:["should be “most kind est”","should be “kindest” (drop most)","should be “more kindest”","no error"], a:1,
-  w:"Never double up: most kindest uses two superlatives. Kindest does the whole job alone."},
- {q:"Little, less, ___?",
-  o:["littlest","lesser","least","most less"], a:2,
-  w:"Little is irregular when it means amount: little, less, least."}]},
-
-{id:"verbs", emoji:"⚡", name:"Verbs & Tenses", blurb:"Doing words and their time travel",
- y4:[
- {q:"Find the verb: “The pelican gobbled the fish in one gulp.”",
-  o:["pelican","gobbled","fish","gulp"], a:1,
-  w:"Gobbled is the doing word: it tells us what the pelican did."},
- {q:"“Yesterday we ___ to the pool.”",
-  o:["go","goes","went","will go"], a:2,
-  w:"Yesterday sends the sentence into the past, and go has an irregular past: went."},
- {q:"Choose the be verb: “They ___ excited about camp.”",
-  o:["is","am","are","be"], a:2,
-  w:"They is plural, so it pairs with are. I am, he is, they are."},
- {q:"“Tomorrow I ___ visit Nan.”",
-  o:["will","did","was","am"], a:0,
-  w:"Tomorrow means future, and will is our future-tense helper."},
- {q:"“Look! The joey ___ jumping!”",
-  o:["are","is","were","be"], a:1,
-  w:"One joey, happening right now: is jumping. That is the present continuous tense."}],
- y5:[
- {q:"“She ___ already finished her homework.”",
-  o:["have","has","is","did"], a:1,
-  w:"Present perfect: has plus finished. She is one person, so has, not have."},
- {q:"In “Ben kicked the ball”, kicked is a transitive verb because...",
-  o:["it happened in the past","it has an object (the ball)","Ben is a proper noun","it is a short word"], a:1,
-  w:"Transitive verbs pass their action onto an object. The ball receives the kick."},
- {q:"“The box of mangoes ___ heavy.”",
-  o:["are","were","is","be"], a:2,
-  w:"The real subject is the box (one box), not the mangoes. So: the box is heavy. Sneaky!"}]},
-
-{id:"adverbs", emoji:"🚀", name:"Adverbs", blurb:"Words that describe the doing",
- y4:[
- {q:"Find the adverb: “The brumby galloped swiftly across the plain.”",
-  o:["brumby","galloped","swiftly","plain"], a:2,
-  w:"Swiftly tells us HOW the brumby galloped. Adverbs often (not always) end in -ly."},
- {q:"“We will leave soon.” What kind of adverb is soon?",
-  o:["manner (how)","place (where)","time (when)","degree (how much)"], a:2,
-  w:"Soon answers WHEN we will leave, so it is an adverb of time."},
- {q:"“The kids played outside.” What kind of adverb is outside?",
-  o:["manner","place","time","degree"], a:1,
-  w:"Outside answers WHERE they played: an adverb of place."},
- {q:"Turn quiet into an adverb:",
-  o:["quieter","quietly","quietest","quietness"], a:1,
-  w:"Add -ly: quietly. Quietness is a noun, quieter is comparing."},
- {q:"“The water was very cold.” What is very doing?",
-  o:["describing the water","telling us how cold","naming something","joining two ideas"], a:1,
-  w:"Very is an adverb of degree: it turns the volume up on cold."}],
- y5:[
- {q:"Well, better, ___?",
-  o:["weller","goodest","best","most well"], a:2,
-  w:"Well borrows the same irregular family as good: well, better, best."},
- {q:"Choose the interrogative adverb: “___ did you get here so fast?”",
-  o:["What","How","Who","Which"], a:1,
-  w:"How asks about the manner of doing. What and who ask about things and people."},
- {q:"Spot the error: “She sings good.”",
-  o:["should be “She sing good”","should be “She sings well”","should be “She sings goodly”","no error"], a:1,
-  w:"Good describes nouns; well describes verbs. She is a good singer who sings well."}]},
-
-{id:"preps", emoji:"🔗", name:"Prepositions & Conjunctions", blurb:"Position words and joining words",
- y4:[
- {q:"“The cat hid ___ the bed during the storm.”",
-  o:["under","on top","between","among"], a:0,
-  w:"Under tells the position: the cat is below the bed. Prepositions are position words."},
- {q:"“Swimming lessons are ___ Monday.”",
-  o:["in","at","on","by"], a:2,
-  w:"Days take on: on Monday. Months and years take in: in March, in 2027."},
- {q:"“I wanted to swim, ___ the pool was closed.”",
-  o:["and","but","so","or"], a:1,
-  w:"But joins two ideas that pull in opposite directions: wanting to swim, pool closed."},
- {q:"“___ it was raining, we played inside.”",
-  o:["Because","But","Or","So that"], a:0,
-  w:"Because introduces the reason. The rain caused the inside play."},
- {q:"“The ferry sails ___ Circular Quay ___ Manly.”",
-  o:["at / in","from / to","by / at","on / for"], a:1,
-  w:"From the start point to the end point. They work as a pair."}],
- y5:[
- {q:"Correct use: “She is really good ___ maths.”",
-  o:["in","on","at","with the"], a:2,
-  w:"Good at is the correct pairing: good at maths, good at cricket."},
- {q:"Choose the correlative pair: “___ Zoe ___ her brother won medals.”",
-  o:["Either / nor","Both / and","Neither / or","Not / but also"], a:1,
-  w:"Both... and... is a matched pair (a correlative conjunction). The mismatched options break the pairs."},
- {q:"“You must finish your reading ___ you can play.”",
-  o:["before","until when","but","nor"], a:0,
-  w:"Before puts the two events in time order: reading first, playing second."}]},
-
-{id:"sentences", emoji:"🧱", name:"Sentences", blurb:"Complete thoughts, subjects and predicates",
- y4:[
- {q:"Which one is a complete sentence?",
-  o:["Running down the hill.","The big red truck.","Emus cannot fly.","Because it was hot."], a:2,
-  w:"A sentence needs a subject and a verb and must make sense alone. “Emus cannot fly” ticks every box."},
- {q:"What kind of sentence is “What a goal!”?",
-  o:["statement","question","command","exclamation"], a:3,
-  w:"It bursts with feeling and ends with an exclamation mark: exclamatory."},
- {q:"What kind of sentence is “Please shut the gate.”?",
-  o:["statement","question","command","exclamation"], a:2,
-  w:"It tells someone to do something (politely!). That makes it a command, or imperative."},
- {q:"Find the subject: “The old lighthouse flashed all night.”",
-  o:["flashed","all night","The old lighthouse","night"], a:2,
-  w:"The subject is who or what the sentence is about: the old lighthouse."},
- {q:"Find the predicate: “Emus run fast.”",
-  o:["Emus","run fast","fast","Emus run"], a:1,
-  w:"The predicate is everything the subject does: run fast."}],
- y5:[
- {q:"“Each of the students ___ a library card.”",
-  o:["have","has","are having","were having"], a:1,
-  w:"Each is the real subject, and each is singular: each has. The students is just extra information."},
- {q:"Best way to combine: “The rain stopped. We went outside.”",
-  o:["The rain stopped we went outside.","When the rain stopped, we went outside.","The rain stopped but outside.","We went outside the rain stopped."], a:1,
-  w:"A subordinating conjunction (when) plus a comma joins them smoothly into one complex sentence."},
- {q:"“Could you pass the salt?” is which kind of sentence?",
-  o:["command","exclamation","question","statement"], a:2,
-  w:"It is shaped as a question (and ends with a question mark), even though it politely asks for action."}]},
-
-{id:"speech", emoji:"💬", name:"Speech & Voice", blurb:"Direct speech, reported speech, active and passive",
- y4:[
- {q:"Which is punctuated correctly?",
-  o:["“Lets go, said Ali.","“Let's go,” said Ali.","“let's go” said Ali.","Let's go,” said “Ali."], a:1,
-  w:"Quotation marks around the exact words, capital L, apostrophe in Let's, comma inside the quotation marks."},
- {q:"Direct or reported? “Mum said dinner was ready.”",
-  o:["direct speech","reported speech","both","neither"], a:1,
-  w:"No quotation marks and the words are retold, not quoted: reported speech."},
- {q:"Turn into direct speech: The coach said that training was cancelled.",
-  o:["“Training was cancelled,” said the coach.","“Training is cancelled,” said the coach.","The coach said training is cancelled.","“training is cancelled” said the coach"], a:1,
-  w:"In the coach's actual spoken words, was becomes is again, and the comma sits inside the quotation marks."},
- {q:"Where does the question mark go? — Can we eat yet asked Mia",
-  o:["“Can we eat yet”? asked Mia.","“Can we eat yet?” asked Mia.","“Can we eat yet? asked Mia.”","Can we eat yet? “asked Mia.”"], a:1,
-  w:"The question mark belongs to the spoken words, so it lives inside the quotation marks."},
- {q:"Pick the strongest speech verb for an excited crowd: “Goal!” they ___.",
-  o:["said","mentioned","roared","stated"], a:2,
-  w:"Roared carries the noise and excitement. Said is fine but flat; climb the word ladder!"}],
- y5:[
- {q:"“The window was broken by the ball.” This sentence is in the...",
-  o:["active voice","passive voice","future tense","command form"], a:1,
-  w:"The subject (window) receives the action instead of doing it. That is passive voice."},
- {q:"Make it active: “The cake was eaten by Sam.”",
-  o:["Sam was eaten by the cake.","The cake ate Sam.","Sam ate the cake.","The cake was being eaten."], a:2,
-  w:"Put the doer first: Sam ate the cake. Shorter, stronger, clearer."},
- {q:"Report this speech: “I am tired,” said Ben.",
-  o:["Ben said that he was tired.","Ben said that I am tired.","Ben says he is tired yesterday.","Ben said that he is being tired."], a:0,
-  w:"In reported speech, I becomes he and am slides back into was."}]}
-];
-
-let state={screen:"home", topic:null, level:"y4", idx:0, order:[], score:0, results:[], done:{}};
+   Primary School English Grammar and Composition.
+   Bank: 26 questions per topic (16 Year 4, 10 Year 5), 208 total.
+   Each round deals a fresh random hand: 8 warm-ups plus 5 challenges. */
+const TOPICS=[];
+TOPICS.push({id:"nouns",emoji:"🏷️",name:"Nouns",blurb:"Naming words: kinds, plurals and apostrophes",
+y4:[
+{d:1,q:"Which word in this sentence is a noun? “The kookaburra laughed loudly from the gum tree.”",o:["laughed","loudly","kookaburra","from"],a:2,w:"A noun is a naming word. Kookaburra names an animal (and gum tree is a noun too!)."},
+{d:1,q:"Which word needs a capital letter? “We flew to sydney on Friday.”",o:["flew","sydney","on","Friday is the only one"],a:1,w:"Sydney is a proper noun, the special name of a place, so it always gets a capital."},
+{d:2,q:"What is the plural of child?",o:["childs","childes","children","childrens"],a:2,w:"Child is an irregular noun: one child, two children."},
+{d:2,q:"Pick the collective noun: a ___ of bees.",o:["flock","swarm","herd","school"],a:1,w:"A swarm of bees. Flocks are for birds or sheep, herds for cattle, schools for fish."},
+{d:1,q:"One mouse, two ___.",o:["mouses","mice","mices","mouse"],a:1,w:"Mouse changes completely in the plural: mice."},
+{d:1,q:"Which word is a noun? “The ferry crossed the harbour quickly.”",o:["crossed","quickly","harbour","the"],a:2,w:"Harbour names a place (and ferry is a noun too)."},
+{d:1,q:"Which of these is a proper noun?",o:["dog","puppy","Bluey","animal"],a:2,w:"Bluey is a special name, so it is a proper noun and gets a capital letter."},
+{d:2,q:"What is the plural of leaf?",o:["leafs","leaves","leafes","leavs"],a:1,w:"Words ending in f often swap to ves: leaf becomes leaves, wolf becomes wolves."},
+{d:2,q:"What is the plural of sheep?",o:["sheeps","sheepes","sheep","shoop"],a:2,w:"Sheep stays the same: one sheep, a hundred sheep. Deer and fish do this too."},
+{d:2,q:"Pick the collective noun: a ___ of fish.",o:["school","classroom","swarm","pack"],a:0,w:"A school of fish. Yes, really: fish go to school!"},
+{d:3,q:"In “Aunty Rose planted six roses”, which word is a proper noun?",o:["Aunty","Rose","roses","planted"],a:1,w:"Rose (with a capital) is her name. The flowers, roses, are common nouns."},
+{d:1,q:"What is the plural of box?",o:["boxs","boxes","boxies","boxen"],a:1,w:"Words ending in x add es: box becomes boxes."},
+{d:3,q:"Which word is NOT used as a noun here? “They run to the beach with a kite.”",o:["beach","run","kite","They run past the shop"],a:1,w:"Run is the doing word (verb) in this sentence. Beach and kite are nouns."},
+{d:3,q:"The female of bull is...",o:["hen","doe","mare","cow"],a:3,w:"Bull and cow are the male and female pair. Hen goes with rooster, mare with stallion."},
+{d:2,q:"The bike belongs to Jack. Which is correct?",o:["Jacks bike","Jacks' bike","Jack's bike","Jack bike's"],a:2,w:"One owner: apostrophe plus s. Jack's bike."},
+{d:2,q:"What is the plural of tooth?",o:["tooths","teeth","toothes","teeths"],a:1,w:"Tooth becomes teeth, just like foot becomes feet."}],
+y5:[
+{d:4,q:"The bowl belongs to two dogs. Which is correct?",o:["the dog's bowl","the dogs' bowl","the dogss bowl","the dogs bowl"],a:1,w:"More than one dog, so the apostrophe goes AFTER the s: the dogs' bowl."},
+{d:4,q:"Find the abstract noun: “Her kindness surprised everyone at training.”",o:["Her","kindness","surprised","training"],a:1,w:"Kindness names a quality you cannot touch or see. That makes it abstract."},
+{d:4,q:"The library belongs to the children. Which is correct?",o:["the childrens' library","the children's library","the childrens library","the children library's"],a:1,w:"Children is already plural, so the apostrophe plus s goes straight on: children's."},
+{d:5,q:"The change room belongs to the men. Which is correct?",o:["the mens' change room","the men's change room","the mens change room","the men change room's"],a:1,w:"Men is already plural (no s to add first), so it takes apostrophe plus s: men's."},
+{d:5,q:"What is the noun made from the adjective brave?",o:["bravely","braver","bravery","bravest"],a:2,w:"Bravery names the quality. Bravely is the adverb, braver and bravest compare."},
+{d:4,q:"In “a flock of galahs”, flock is which kind of noun?",o:["proper","abstract","collective","possessive"],a:2,w:"A collective noun names a group. Flock collects the galahs into one word."},
+{d:4,q:"What is the singular of geese?",o:["goose","geese","goosen","gee"],a:0,w:"One goose, two geese. Same pattern as tooth and teeth."},
+{d:5,q:"Find the head noun: “the rusty old ute with a flat tyre”.",o:["rusty","ute","tyre","old"],a:1,w:"Strip away the describers and the phrase: the whole group is really about the ute."},
+{d:5,q:"Which sentence uses the apostrophe correctly?",o:["The two team's jerseys were muddy.","The two teams jersey's were muddy.","The two teams' jerseys were muddy.","The two teams jerseys' were muddy."],a:2,w:"Two teams own the jerseys, so the apostrophe goes after the plural s: teams'."},
+{d:4,q:"The team belongs to the women. Which is correct?",o:["the womens' team","the women's team","the womans team","the womens team"],a:1,w:"Women is already plural, so apostrophe plus s: women's team."}]});
+TOPICS.push({id:"pronouns",emoji:"👉",name:"Pronouns",blurb:"Words that stand in for nouns",
+y4:[
+{d:1,q:"Choose the pronoun: “Maya lost ___ hat at the beach.”",o:["she","her","hers","herself"],a:1,w:"Her works before a noun: her hat. Hers stands alone."},
+{d:2,q:"Which is correct?",o:["Tom and me went fishing.","Tom and I went fishing.","Me and Tom goes fishing.","I and Tom went fishing."],a:1,w:"Remove Tom to test it: “I went fishing” sounds right, “me went fishing” does not."},
+{d:2,q:"Choose the demonstrative pronoun: “___ shoes over there are muddy.”",o:["This","That","Those","These here"],a:2,w:"Over there means far away, and shoes is plural, so those is the match."},
+{d:1,q:"Choose the question word: “___ is knocking at the door?”",o:["Whom","Who","Whose","Which one of"],a:1,w:"Who asks about a person doing the action."},
+{d:2,q:"Which is correct? “The dog wagged ___ tail.”",o:["it's","its","its'","it is"],a:1,w:"Its (no apostrophe) means belonging to it. It's always means it is."},
+{d:1,q:"“___ am going to the shops.”",o:["Me","I","Him","Us"],a:1,w:"I is the subject pronoun that pairs with am."},
+{d:2,q:"“Nan gave the mangoes to Sam and ___.”",o:["I","me","myself","she"],a:1,w:"Remove Sam to test: “Nan gave the mangoes to me.” Me is the object."},
+{d:1,q:"“The skateboard belongs to me. It is ___.”",o:["my","mine","me","myself"],a:1,w:"Mine stands alone at the end of a sentence. My needs a noun after it."},
+{d:1,q:"Which pronoun replaces “Ella and Zoe”?",o:["she","her","they","them both is"],a:2,w:"Two people doing something together become they."},
+{d:1,q:"“This is my dog. ___ name is Ziggy.”",o:["It's","Its","Its'","It"],a:1,w:"Belonging to the dog: its name. No apostrophe."},
+{d:2,q:"“We taught ___ the rules.” (the new kids)",o:["they","their","them","theirs"],a:2,w:"Them is the object pronoun: the teaching happens TO them."},
+{d:2,q:"“___ of these caps is yours?”",o:["Who","Which","Whose","What one"],a:1,w:"Which asks the listener to choose from a set of things."},
+{d:2,q:"“My sister and ___ built a cubby.”",o:["me","I","us","mine"],a:1,w:"Test alone: “I built a cubby.” I is the subject."},
+{d:1,q:"“___ is my seat right here.”",o:["That","Those","This","These"],a:2,w:"Right here means close, and seat is singular: this."},
+{d:1,q:"“Give the ball to ___.”",o:["he","him","his","he's"],a:1,w:"Him is the object pronoun: the ball goes TO him."},
+{d:3,q:"Fix the repeat: “The twins fed the twins' rabbit.”",o:["The twins fed their rabbit.","The twins fed there rabbit.","The twins fed they're rabbit.","The twins fed its rabbit."],a:0,w:"Their means belonging to them. There is a place; they're means they are."}],
+y5:[
+{d:4,q:"Choose the reflexive pronoun: “She taught ___ to juggle.”",o:["her","she","herself","hers"],a:2,w:"The action bounces back to the doer, so we need the -self form."},
+{d:4,q:"Choose the relative pronoun: “The boy ___ won the race is my cousin.”",o:["which","who","what","whom the"],a:1,w:"Who relates back to a person and joins the two ideas into one sentence."},
+{d:4,q:"Which is correct? “___ jumper is this on the oval?”",o:["Who's","Whose","Whos","Who is"],a:1,w:"Whose asks about belonging. Who's is short for who is."},
+{d:4,q:"“The players organised ___ into two teams.”",o:["theirselves","themself","themselves","them own"],a:2,w:"Themselves is the plural reflexive. Theirselves is never a word."},
+{d:4,q:"“The kite ___ has a red tail is mine.”",o:["who","that","whom","whose"],a:1,w:"That (or which) relates back to a thing. Who is only for people."},
+{d:5,q:"“The girl ___ bike was stolen told the office.”",o:["who","which","whose","that"],a:2,w:"Whose shows the bike belongs to the girl, and joins the ideas."},
+{d:5,q:"“Between you and ___, the sequel is better.”",o:["I","me","myself","we"],a:1,w:"Between is a preposition, so it takes the object pronoun: me. “Between you and I” is a famous trap."},
+{d:5,q:"Spot the error: “Him and I went first.”",o:["should be “Him and me”","should be “He and I”","should be “His and I”","no error"],a:1,w:"Both pronouns are subjects: He went first, I went first, so He and I."},
+{d:5,q:"“I baked this pavlova ___!” (all on my own)",o:["itself","meself","myself","mineself"],a:2,w:"Myself adds proud emphasis: I did it with no help."},
+{d:4,q:"“When Liam met Arlo, he smiled.” What is the problem?",o:["smiled is the wrong tense","we cannot tell who “he” is","met needs a capital","there is no problem"],a:1,w:"He could mean Liam or Arlo. Pronouns need a clear owner, or the reader gets lost."}]});
+TOPICS.push({id:"adjectives",emoji:"🎨",name:"Adjectives & Articles",blurb:"Describing words, a, an and the",
+y4:[
+{d:1,q:"Find the adjective: “The enormous crocodile slid into the muddy river.”",o:["crocodile","slid","enormous","river"],a:2,w:"Enormous describes the crocodile (and muddy describes the river)."},
+{d:1,q:"Choose the article: “We spotted ___ emu near the fence.”",o:["a","an","two an","the an"],a:1,w:"Emu starts with a vowel sound, so it takes an."},
+{d:1,q:"Tall, taller, ___?",o:["tallerer","most tall","tallest","more taller"],a:2,w:"Short adjectives add -est for the top level."},
+{d:2,q:"Good, better, ___?",o:["goodest","bestest","best","most good"],a:2,w:"Good is irregular: good, better, best."},
+{d:2,q:"Choose correctly: “This mango is sweeter than ___ one.”",o:["those","these","that","them"],a:2,w:"One mango, further away: that one. Those and these go with plurals."},
+{d:3,q:"Why is it “an honest mistake”?",o:["honest is a long word","the h in honest is silent, so it starts with a vowel sound","mistakes always take an","it is actually wrong"],a:1,w:"We choose a or an by SOUND. Honest sounds like on-est, so it takes an."},
+{d:1,q:"Find the adjective of number: “Seven emus crossed the road.”",o:["emus","Seven","crossed","road"],a:1,w:"Seven tells us how many, so it is an adjective of number."},
+{d:2,q:"Bad, worse, ___?",o:["baddest","worser","worst","most bad"],a:2,w:"Bad is irregular: bad, worse, worst."},
+{d:1,q:"Choose the best adjective: “The lemon pie tasted ___.”",o:["sour","sourly","sourness","soured it"],a:0,w:"Sour describes the pie. Sourly is an adverb, sourness is a noun."},
+{d:1,q:"“___ sun rose at six.”",o:["A","An","The","Some"],a:2,w:"There is only one sun we all know, so it takes the."},
+{d:1,q:"Which word does hungry describe? “The hungry magpie watched my chips.”",o:["watched","chips","magpie","my"],a:2,w:"Hungry belongs to the magpie. Adjectives lean on their noun."},
+{d:2,q:"What is the comparative of happy?",o:["happyer","happier","more happy","happiest"],a:1,w:"Change the y to i and add -er: happier."},
+{d:2,q:"“___ apples here are the crunchy ones.”",o:["That","This","These","Those over there"],a:2,w:"Here means close, apples is plural: these."},
+{d:3,q:"Find the adjective of quantity: “There is little water in the tank.”",o:["water","tank","little","There"],a:2,w:"Little tells us how much water, so it is an adjective of quantity."},
+{d:2,q:"Which is correct?",o:["beautifuller","more beautiful","beautifulest","most beautifuller"],a:1,w:"Long adjectives compare with more and most, not -er and -est."},
+{d:3,q:"Which of these is the adjective?",o:["quickly","quick","quicken","quickness"],a:1,w:"Quick describes a noun (a quick runner). Quickly is the adverb, quickness is the noun."}],
+y5:[
+{d:4,q:"Choose the articles: “I saw ___ echidna at the park. ___ echidna was digging.”",o:["a / A","an / The","the / An","an / A"],a:1,w:"First mention: an echidna (any one). Second mention: the echidna (now we know which)."},
+{d:4,q:"Spot the error: “She is the most kindest teacher in the school.”",o:["should be “most kind est”","should be “kindest” (drop most)","should be “more kindest”","no error"],a:1,w:"Never double up superlatives: kindest does the whole job alone."},
+{d:4,q:"Little, less, ___?",o:["littlest","lesser","least","most less"],a:2,w:"Little (meaning amount) is irregular: little, less, least."},
+{d:5,q:"Pick the natural order: “a ___ kelpie”.",o:["black young clever","clever young black","young black clever","black clever young"],a:1,w:"English quietly orders adjectives: opinion (clever), then age (young), then colour (black)."},
+{d:5,q:"Spot the error: “This is a more better plan.”",o:["should be “more good”","should be “better” (drop more)","should be “more betterer”","no error"],a:1,w:"Better is already comparative. Adding more doubles up."},
+{d:4,q:"“That was the ___ film of the holidays.”",o:["excitingest","most exciting","more exciting","much exciting"],a:1,w:"Exciting is a long adjective, so it takes most for the superlative."},
+{d:5,q:"“I love ___ cricket.” Which article fits?",o:["a","an","the","no article is needed"],a:3,w:"Sports and school subjects usually take no article: I love cricket, I like maths."},
+{d:5,q:"“___ students caught the bus today than yesterday.”",o:["Less","Fewer","Least","Small"],a:1,w:"Fewer is for things you can count (students). Less is for amounts (less water)."},
+{d:4,q:"“The sausages smell ___.”",o:["good","well","goodly","better than well"],a:0,w:"Smell is a linking verb here, so it takes the adjective good, describing the sausages."},
+{d:4,q:"Which is punctuated correctly?",o:["a well known author","a well-known author","a wellknown author","a well, known author"],a:1,w:"Well-known works as one describing word before a noun, so it takes a hyphen."}]});
+TOPICS.push({id:"verbs",emoji:"⚡",name:"Verbs & Tenses",blurb:"Doing words and their time travel",
+y4:[
+{d:1,q:"Find the verb: “The pelican gobbled the fish in one gulp.”",o:["pelican","gobbled","fish","gulp"],a:1,w:"Gobbled is the doing word: what the pelican did."},
+{d:1,q:"“Yesterday we ___ to the pool.”",o:["go","goes","went","will go"],a:2,w:"Yesterday sends us into the past: went."},
+{d:1,q:"Choose the be verb: “They ___ excited about camp.”",o:["is","am","are","be"],a:2,w:"They is plural, so it pairs with are."},
+{d:1,q:"“Tomorrow I ___ visit Nan.”",o:["will","did","was","am"],a:0,w:"Tomorrow means future, and will is our future helper."},
+{d:2,q:"“Look! The joey ___ jumping!”",o:["are","is","were","be"],a:1,w:"One joey, happening right now: is jumping."},
+{d:2,q:"What is the past tense of swim?",o:["swimmed","swam","swum by itself","swimed"],a:1,w:"Swim is irregular: swim, swam, (has) swum."},
+{d:2,q:"“The dogs ___ barking all night.”",o:["was","were","is","am"],a:1,w:"Dogs is plural, and all night is past: were barking."},
+{d:2,q:"“I ___ already done my chores.”",o:["has","have","am","was"],a:1,w:"I pairs with have: I have done."},
+{d:2,q:"What is the past tense of catch?",o:["catched","caught","cought","catches"],a:1,w:"Catch is irregular: catch, caught."},
+{d:1,q:"“He ___ his bike to school every day.”",o:["ride","rides","riding","ridden"],a:1,w:"He takes the s form in the present: he rides."},
+{d:1,q:"In “Pass the ball!”, the verb is...",o:["ball","Pass","the","there is no verb"],a:1,w:"Commands start with the verb: Pass."},
+{d:2,q:"What is the past tense of begin?",o:["beginned","begun on its own","began","begins"],a:2,w:"Begin, began, (has) begun. Began stands alone; begun needs a helper."},
+{d:1,q:"“We ___ watching the storm from the verandah.”",o:["is","am","are","be"],a:2,w:"We is plural: we are watching."},
+{d:2,q:"“___ she like mangoes?”",o:["Do","Does","Is","Are"],a:1,w:"She takes does: Does she like...? (Do goes with I, you, we, they.)"},
+{d:1,q:"“The kettle ___ boiling.”",o:["are","is","were","been"],a:1,w:"One kettle, right now: is boiling."},
+{d:3,q:"“They ___ arrive at noon tomorrow.”",o:["will","would have","was going","did"],a:0,w:"Simple future: will arrive."}],
+y5:[
+{d:4,q:"“She ___ already finished her homework.”",o:["have","has","is","did"],a:1,w:"Present perfect: has plus finished. She is one person, so has."},
+{d:5,q:"In “Ben kicked the ball”, kicked is a transitive verb because...",o:["it happened in the past","it has an object (the ball)","Ben is a proper noun","it is a short word"],a:1,w:"Transitive verbs pass their action onto an object. The ball receives the kick."},
+{d:5,q:"“The box of mangoes ___ heavy.”",o:["are","were","is","be"],a:2,w:"The real subject is the box (one box), not the mangoes. The box is heavy."},
+{d:4,q:"“I ___ reading when the lights went out.”",o:["was","were","am","is"],a:0,w:"Past continuous: I was reading. The reading was in progress when something happened."},
+{d:4,q:"“We ___ lived here since 2023.”",o:["has","have","are","was"],a:1,w:"Present perfect with we: have lived. Since 2023 links the past to now."},
+{d:4,q:"“She has ___ all the mangoes!”",o:["ate","eaten","eat","eated"],a:1,w:"After has, use the past participle: eaten. Ate stands alone (She ate lunch)."},
+{d:5,q:"In “The sky turned purple”, turned is a...",o:["command","linking verb","noun","preposition"],a:1,w:"Turned links the sky to its new description, purple. Nothing is being physically turned."},
+{d:4,q:"In “He loves to fish”, the words to fish are...",o:["a noun group","an infinitive","an adverb","a mistake"],a:1,w:"To plus a verb is the infinitive: the base form of the verb."},
+{d:5,q:"In “Swimming is my favourite sport”, Swimming is...",o:["a plain verb","an adjective","a gerund (a verb acting as a noun)","an adverb"],a:2,w:"Swimming names an activity here, so this -ing verb is working as a noun: a gerund."},
+{d:5,q:"“Neither of the twins ___ ready.”",o:["are","is","were","be"],a:1,w:"Neither is the singular subject: neither one is ready. The twins is extra information."}]});
+TOPICS.push({id:"adverbs",emoji:"🚀",name:"Adverbs",blurb:"Words that describe the doing",
+y4:[
+{d:1,q:"Find the adverb: “The brumby galloped swiftly across the plain.”",o:["brumby","galloped","swiftly","plain"],a:2,w:"Swiftly tells us HOW the brumby galloped."},
+{d:2,q:"“We will leave soon.” What kind of adverb is soon?",o:["manner (how)","place (where)","time (when)","degree (how much)"],a:2,w:"Soon answers WHEN we will leave."},
+{d:2,q:"“The kids played outside.” What kind of adverb is outside?",o:["manner","place","time","degree"],a:1,w:"Outside answers WHERE they played."},
+{d:1,q:"Turn quiet into an adverb:",o:["quieter","quietly","quietest","quietness"],a:1,w:"Add -ly: quietly."},
+{d:2,q:"“The water was very cold.” What is very doing?",o:["describing the water","turning up the volume on cold","naming something","joining two ideas"],a:1,w:"Very is an adverb of degree: it makes cold stronger."},
+{d:2,q:"Soon, now and later are all adverbs of...",o:["manner","place","time","degree"],a:2,w:"They all answer the question WHEN."},
+{d:1,q:"Turn gentle into an adverb:",o:["gentler","gently","gentlest","gentleness"],a:1,w:"Gentle becomes gently. Watch the spelling: no extra e."},
+{d:1,q:"Find the adverb: “The cockatoo screeched loudly at dawn.”",o:["cockatoo","screeched","loudly","dawn"],a:2,w:"Loudly tells us how it screeched."},
+{d:2,q:"“We looked everywhere for the car keys.” Everywhere is an adverb of...",o:["manner","place","time","degree"],a:1,w:"Everywhere answers WHERE we looked."},
+{d:3,q:"“She almost missed the bus.” Almost is an adverb of...",o:["manner","place","time","degree"],a:3,w:"Almost tells us how close it came: a degree word."},
+{d:1,q:"Pick the best adverb: “The cheetah ran ___.”",o:["swift","swiftly","swiftness","more swift than fast"],a:1,w:"Verbs take adverbs: ran swiftly."},
+{d:2,q:"Turn happy into an adverb:",o:["happyly","happily","happiedly","happier"],a:1,w:"Change the y to i, then add -ly: happily."},
+{d:2,q:"Which word does carefully describe? “Dad reversed the trailer carefully.”",o:["Dad","reversed","trailer","the"],a:1,w:"Carefully describes HOW Dad reversed. Adverbs lean on verbs."},
+{d:1,q:"“We visited Nan yesterday.” Yesterday is an adverb of...",o:["time","place","manner","degree"],a:0,w:"Yesterday answers WHEN."},
+{d:1,q:"“The choir sang ___.”",o:["beautiful","beautifully","beauty","more beautiful"],a:1,w:"Sang is a verb, so it takes the adverb: beautifully."},
+{d:3,q:"“The job is very nearly finished.” Very is describing...",o:["job","finished","nearly","is"],a:2,w:"Very turns up nearly. Adverbs can describe other adverbs!"}],
+y5:[
+{d:4,q:"Well, better, ___?",o:["weller","goodest","best","most well"],a:2,w:"Well borrows the same irregular family as good: well, better, best."},
+{d:4,q:"Choose the interrogative adverb: “___ did you get here so fast?”",o:["What","How","Who","Which"],a:1,w:"How asks about the manner of doing."},
+{d:4,q:"Spot the error: “She sings good.”",o:["should be “She sing good”","should be “She sings well”","should be “She sings goodly”","no error"],a:1,w:"Good describes nouns; well describes verbs. A good singer sings well."},
+{d:4,q:"“The team played ___ in the first half.”",o:["bad","badly","more bad","baddest"],a:1,w:"Played is a verb, so it takes the adverb badly."},
+{d:4,q:"“She arrived ___ than me.”",o:["early","earlier","earliest","more early"],a:1,w:"Earlier is the comparative: change y to i, add -er."},
+{d:5,q:"“Only Sam fed the chooks” vs “Sam fed only the chooks”. What changes?",o:["nothing changes","the tense changes","what the word only limits: who did it, or what got fed","chooks becomes plural"],a:2,w:"Only limits whatever it sits beside. Move it and you move the meaning."},
+{d:5,q:"“He trained ___ for the swimming carnival.”",o:["hard","hardly","harder than hardly","hardly ever"],a:0,w:"Hard means with effort. Hardly means almost not at all: a trap pair!"},
+{d:4,q:"“___ often do you practise spelling?”",o:["What","Which","How","Who"],a:2,w:"How often asks about frequency."},
+{d:5,q:"In “surprisingly quiet”, the word surprisingly is describing...",o:["a verb","the adjective quiet","a noun","nothing"],a:1,w:"Adverbs can boost adjectives too: HOW quiet? Surprisingly quiet."},
+{d:5,q:"What is the comparative adverb of fast? “The ute goes ___.”",o:["fastly","more fastly","faster","fastest of all"],a:2,w:"Fast is both adjective and adverb, and its comparative is faster. Fastly is never a word."}]});
+TOPICS.push({id:"preps",emoji:"🔗",name:"Prepositions & Conjunctions",blurb:"Position words and joining words",
+y4:[
+{d:1,q:"“The cat hid ___ the bed during the storm.”",o:["under","on top","between","among"],a:0,w:"Under tells the position: below the bed."},
+{d:2,q:"“Swimming lessons are ___ Monday.”",o:["in","at","on","by"],a:2,w:"Days take on: on Monday. Months take in: in March."},
+{d:1,q:"“I wanted to swim, ___ the pool was closed.”",o:["and","but","so","or"],a:1,w:"But joins two ideas pulling in opposite directions."},
+{d:2,q:"“___ it was raining, we played inside.”",o:["Because","But","Or","So that"],a:0,w:"Because introduces the reason."},
+{d:2,q:"“The ferry sails ___ Circular Quay ___ Manly.”",o:["at / in","from / to","by / at","on / for"],a:1,w:"From the start point to the end point. They work as a pair."},
+{d:1,q:"“The possum climbed ___ the tree.”",o:["up","between","among","of"],a:0,w:"Up shows the direction of the climb."},
+{d:2,q:"“We waited ___ three o'clock.”",o:["on","until","among","of"],a:1,w:"Until stretches the waiting up to that time."},
+{d:2,q:"“School starts ___ nine o'clock.”",o:["on","in","at","by the"],a:2,w:"Clock times take at: at nine o'clock."},
+{d:1,q:"“The letter is ___ the envelope.”",o:["in","on","at","between"],a:0,w:"In means enclosed: inside the envelope."},
+{d:1,q:"“Would you like mango ___ watermelon?”",o:["and never","but","or","so"],a:2,w:"Or offers a choice between the two."},
+{d:1,q:"“The dog jumped ___ the fence.”",o:["over","among","inside","of"],a:0,w:"Over shows the jump clearing the fence."},
+{d:1,q:"“My birthday is ___ March.”",o:["on","in","at","by"],a:1,w:"Months take in: in March."},
+{d:2,q:"“It was boiling hot, ___ we went swimming.”",o:["but","or","so","nor"],a:2,w:"So shows the result: the heat led to the swim."},
+{d:3,q:"“Share the pizza ___ the two of you.”",o:["among","between","inside","onto"],a:1,w:"Between is for two. Among is for three or more."},
+{d:1,q:"“The cave was hidden ___ the waterfall.”",o:["behind","until","of","or"],a:0,w:"Behind places the cave at the back of the waterfall."},
+{d:2,q:"“We cheered ___ the siren sounded.”",o:["but","when","or","of"],a:1,w:"When links the cheering to the exact moment."}],
+y5:[
+{d:4,q:"Correct use: “She is really good ___ maths.”",o:["in","on","at","with the"],a:2,w:"Good at is the correct pairing: good at maths, good at cricket."},
+{d:4,q:"Choose the correlative pair: “___ Zoe ___ her brother won medals.”",o:["Either / nor","Both / and","Neither / or","Not / but also"],a:1,w:"Both... and... is a matched pair. The other options break their pairs."},
+{d:4,q:"“You must finish your reading ___ you can play.”",o:["before","until when","but","nor"],a:0,w:"Before puts the events in time order."},
+{d:5,q:"“The team consists ___ eleven players.”",o:["of","in","from","by"],a:0,w:"Consists of is the fixed pairing."},
+{d:4,q:"“___ take an umbrella ___ wear a raincoat.”",o:["Both / and","Either / or","Neither / nor","So / that"],a:1,w:"Either... or... offers two choices as a matched pair."},
+{d:4,q:"“Neither the coach ___ the players knew the score.”",o:["or","and","nor","but"],a:2,w:"Neither always partners with nor."},
+{d:4,q:"“___ he was exhausted, he finished the race.”",o:["Because","Although","So","Unless"],a:1,w:"Although sets up a surprise: tired, BUT finished anyway."},
+{d:5,q:"“We arrived ___ Sydney just after dawn.”",o:["at","in","on","to"],a:1,w:"Cities and countries take in: arrived in Sydney. Small places take at: arrived at the shop."},
+{d:5,q:"“She has played netball ___ three years.”",o:["since","for","from","at"],a:1,w:"For goes with a length of time (three years). Since goes with a starting point (since 2023)."},
+{d:5,q:"“You will miss the bus ___ you hurry.”",o:["because","unless","so","although"],a:1,w:"Unless means if you do not: miss the bus if you do not hurry."}]});
+TOPICS.push({id:"sentences",emoji:"🧱",name:"Sentences",blurb:"Complete thoughts, subjects and predicates",
+y4:[
+{d:1,q:"Which one is a complete sentence?",o:["Running down the hill.","The big red truck.","Emus cannot fly.","Because it was hot."],a:2,w:"A sentence needs a subject and a verb and must make sense alone."},
+{d:1,q:"What kind of sentence is “What a goal!”?",o:["statement","question","command","exclamation"],a:3,w:"It bursts with feeling and ends with an exclamation mark."},
+{d:2,q:"What kind of sentence is “Please shut the gate.”?",o:["statement","question","command","exclamation"],a:2,w:"It tells someone to do something politely: a command."},
+{d:2,q:"Find the subject: “The old lighthouse flashed all night.”",o:["flashed","all night","The old lighthouse","night"],a:2,w:"The subject is who or what the sentence is about."},
+{d:2,q:"Find the predicate: “Emus run fast.”",o:["Emus","run fast","fast","Emus run"],a:1,w:"The predicate is everything the subject does."},
+{d:1,q:"Which one is a question?",o:["Shut the window.","The window is open.","Is the window open?","What a draughty window!"],a:2,w:"It asks something and ends with a question mark."},
+{d:3,q:"“Under the house.” What is this fragment missing?",o:["an exclamation mark","a subject and a verb","more describing words","nothing, it is complete"],a:1,w:"Who did what under the house? Without a subject and verb it cannot stand alone."},
+{d:1,q:"Find the subject: “My little brother snores.”",o:["snores","little","My little brother","brother snores"],a:2,w:"The whole noun group, my little brother, is the subject."},
+{d:1,q:"What kind of sentence is “The tide is coming in.”?",o:["statement","question","command","exclamation"],a:0,w:"It simply tells us information: a statement."},
+{d:2,q:"Find the predicate: “The cattle dog rounded up the sheep.”",o:["The cattle dog","rounded up the sheep","the sheep","cattle dog rounded"],a:1,w:"Everything the subject does: rounded up the sheep."},
+{d:1,q:"Which end mark does this need? “How amazing”",o:["a full stop","a question mark","an exclamation mark","a comma"],a:2,w:"It is an exclamation of feeling: How amazing!"},
+{d:2,q:"“There ___ two magpies on the clothesline.”",o:["is","are","am","be"],a:1,w:"Two magpies is plural, so: there are."},
+{d:1,q:"Which one is a command?",o:["The bell has rung.","Line up at the door.","Are you lining up?","What a long line!"],a:1,w:"It starts with a verb and tells someone what to do."},
+{d:2,q:"What does this sentence need? “the bus was late”",o:["a capital T and a full stop","just a question mark","quotation marks","nothing"],a:0,w:"Every sentence starts with a capital and ends with a mark: The bus was late."},
+{d:3,q:"Find the subject: “Did the girls win the relay?”",o:["Did","the girls","the relay","win"],a:1,w:"Flip the question into a statement: the girls did win. The girls is the subject."},
+{d:2,q:"Combine neatly: “I packed hats. I packed sunscreen.”",o:["I packed hats I packed sunscreen.","I packed hats and sunscreen.","I packed hats, packed sunscreen also.","Hats and sunscreen packed."],a:1,w:"One subject, one verb, two things joined by and."}],
+y5:[
+{d:4,q:"“Each of the students ___ a library card.”",o:["have","has","are having","were having"],a:1,w:"Each is the singular subject: each has. The students is extra information."},
+{d:4,q:"Best way to combine: “The rain stopped. We went outside.”",o:["The rain stopped we went outside.","When the rain stopped, we went outside.","The rain stopped but outside.","We went outside the rain stopped."],a:1,w:"A subordinating conjunction plus a comma joins them into one complex sentence."},
+{d:4,q:"“Could you pass the salt?” is which kind of sentence?",o:["command","exclamation","question","statement"],a:2,w:"It is shaped as a question, even though it politely asks for action."},
+{d:5,q:"“Neither of the answers ___ correct.”",o:["are","is","were","be"],a:1,w:"Neither is singular: neither one is correct."},
+{d:5,q:"“Although it rained, we still played.” This sentence is...",o:["simple","compound","complex","a fragment"],a:2,w:"It has a main clause plus a dependent clause starting with although: complex."},
+{d:4,q:"Find the dependent clause: “When the bell rang, we ran outside.”",o:["we ran outside","When the bell rang","the bell","ran outside"],a:1,w:"When the bell rang cannot stand alone: it depends on the main clause."},
+{d:5,q:"“The news ___ good tonight.”",o:["are","is","were","be"],a:1,w:"News looks plural but acts singular: the news is good."},
+{d:4,q:"“Everyone ___ invited to the pool party.”",o:["are","is","were","be"],a:1,w:"Everyone is singular, even though it means many people: everyone is invited."},
+{d:5,q:"Find the main clause: “If you finish early, check your work.”",o:["If you finish early","check your work","you finish","finish early"],a:1,w:"Check your work can stand alone. The if part depends on it."},
+{d:4,q:"Which joins these best? “We missed the bus. We were still on time.”",o:["We missed the bus so we were still on time.","Although we missed the bus, we were still on time.","We missed the bus because we were on time.","Missing the bus, on time."],a:1,w:"Although signals the surprise: missed the bus, BUT still on time."}]});
+TOPICS.push({id:"speech",emoji:"💬",name:"Speech & Voice",blurb:"Direct speech, reported speech, active and passive",
+y4:[
+{d:2,q:"Which is punctuated correctly?",o:["“Lets go, said Ali.","“Let's go,” said Ali.","“let's go” said Ali.","Let's go,” said “Ali."],a:1,w:"Quotation marks around the exact words, capital L, apostrophe in Let's, comma inside."},
+{d:1,q:"Direct or reported? “Mum said dinner was ready.”",o:["direct speech","reported speech","both","neither"],a:1,w:"No quotation marks and the words are retold: reported."},
+{d:3,q:"Turn into direct speech: The coach said that training was cancelled.",o:["“Training was cancelled,” said the coach.","“Training is cancelled,” said the coach.","The coach said training is cancelled.","“training is cancelled” said the coach"],a:1,w:"In the coach's actual words, was becomes is again, and the comma sits inside the quotation marks."},
+{d:2,q:"Where does the question mark go? Fix this: Can we eat yet asked Mia",o:["“Can we eat yet”? asked Mia.","“Can we eat yet?” asked Mia.","“Can we eat yet? asked Mia.”","Can we eat yet? “asked Mia.”"],a:1,w:"The question mark belongs to the spoken words, inside the quotation marks."},
+{d:1,q:"Pick the strongest speech verb for an excited crowd: “Goal!” they ___.",o:["said","mentioned","roared","stated"],a:2,w:"Roared carries the noise and excitement."},
+{d:2,q:"Which is punctuated correctly?",o:["“Youre late,” said the coach.","“You're late,” said the coach.","“You're late” said the coach","you're late, “said the coach.”"],a:1,w:"Apostrophe in You're, comma inside the quotation marks, tag outside."},
+{d:2,q:"Turn into reported speech: “I love camping,” said Zoe.",o:["Zoe said that she loved camping.","Zoe said that I love camping.","Zoe says she is loving camping.","“Zoe loves camping,” she said."],a:0,w:"I becomes she, and love slides back to loved."},
+{d:1,q:"A new speaker starts talking. What do we do on the page?",o:["keep writing on the same line","start a new line","add three exclamation marks","use capital letters for everything"],a:1,w:"New speaker, new line. It keeps conversations easy to follow."},
+{d:1,q:"Pick the best speech verb for a secret: “Meet me at the shed,” she ___.",o:["shouted","whispered","announced","bellowed"],a:1,w:"Secrets travel quietly: whispered."},
+{d:1,q:"Which sentence shows the speaker's EXACT words?",o:["Ben said he was tired.","Ben mentioned being tired.","“I am tired,” said Ben.","Ben seemed tired."],a:2,w:"Exact words live inside quotation marks."},
+{d:2,q:"Which is punctuated correctly when the tag comes first?",o:["The coach said, “Bring your boots.”","The coach said “Bring your boots”.","The coach said: Bring your boots.","The coach, said bring your boots."],a:0,w:"Tag first: comma after said, then the capital inside the quotation marks."},
+{d:3,q:"Turn into direct speech: Dad asked if we were hungry.",o:["“Are you hungry?” asked Dad.","“Were you hungry?” asked Dad.","Dad asked “are we hungry”.","“You are hungry,” asked Dad."],a:0,w:"The question comes back to life: Are you hungry? Capital A, question mark inside."},
+{d:2,q:"“Watch out!” The exclamation mark sits inside the quotation marks because...",o:["it looks tidier","the excitement belongs to the spoken words","exclamation marks always go there","it is actually a mistake"],a:1,w:"The shout is part of what was said, so its punctuation stays inside."},
+{d:1,q:"Pick the best speech verb for a nervous character: “I... I saw something,” he ___.",o:["boomed","stammered","cheered","laughed"],a:1,w:"Stammered matches the stumbling, nervous delivery."},
+{d:3,q:"Why is the second we lower-case? “If we hurry,” said Mia, “we will make it.”",o:["it is a typing mistake","the spoken sentence is continuing, not starting again","names are capitals, not we","quotation marks remove capitals"],a:1,w:"The tag interrupts one spoken sentence, so it continues without a new capital."},
+{d:1,q:"Find the speaker tag: “The tide is turning,” said Priya.",o:["The tide","is turning","said Priya","there is no tag"],a:2,w:"The tag tells us who spoke: said Priya."}],
+y5:[
+{d:4,q:"“The window was broken by the ball.” This sentence is in the...",o:["active voice","passive voice","future tense","command form"],a:1,w:"The subject (window) receives the action instead of doing it: passive."},
+{d:4,q:"Make it active: “The cake was eaten by Sam.”",o:["Sam was eaten by the cake.","The cake ate Sam.","Sam ate the cake.","The cake was being eaten."],a:2,w:"Put the doer first: Sam ate the cake. Shorter and stronger."},
+{d:4,q:"Report this speech: “I am tired,” said Ben.",o:["Ben said that he was tired.","Ben said that I am tired.","Ben says he is tired yesterday.","Ben said that he is being tired."],a:0,w:"I becomes he, and am slides back into was."},
+{d:4,q:"Which sentence is in the passive voice?",o:["Jess scored two tries.","Two tries were scored by Jess.","Jess is scoring tries.","Jess will score tries."],a:1,w:"The tries receive the action and sit up front: passive."},
+{d:5,q:"Make it passive: “The wind flattened the tent.”",o:["The tent flattened the wind.","The tent was flattened by the wind.","The wind was flattening tents.","The tent is flat."],a:1,w:"The receiver moves to the front: the tent was flattened by the wind."},
+{d:5,q:"When is the passive voice actually useful?",o:["never, it is banned","when the doer is unknown or unimportant","when you want longer sentences","only in poetry"],a:1,w:"“My bike was stolen” works because we do not know who did it. The mystery doer suits passive."},
+{d:4,q:"Report this: “I will help,” said Tom.",o:["Tom said that he would help.","Tom said that he will helped.","Tom says he would help.","Tom said that I will help."],a:0,w:"In reported speech, will steps back to would."},
+{d:5,q:"Report this question: “Where is the oval?” asked the new kid.",o:["The new kid asked where the oval was.","The new kid asked where was the oval?","The new kid asked, where is the oval.","The new kid said the oval."],a:0,w:"Reported questions lose the question mark and flip to statement order: where the oval was."},
+{d:5,q:"Why do storytellers usually prefer the active voice?",o:["it uses fancier words","it is shorter, clearer and more energetic","teachers demand it","it rhymes more often"],a:1,w:"“The dog chased the ball” beats “The ball was chased by the dog” for pace and punch."},
+{d:4,q:"“Someone has eaten the last Tim Tam.” This sentence is...",o:["passive voice","active voice","reported speech","a command"],a:1,w:"Someone (the subject) did the eating, so it is active, even though the someone is a mystery."}]});
+const LEVELS=[["quest","Quest","Warm up in Year 4, then Level Up to Year 5"],
+["1","Level 1","Gentle warm-ups"],["2","Level 2","Year 4 core"],["3","Level 3","Tricky Year 4"],
+["4","Level 4","Year 5 zone"],["5","Level 5","Top challenge"]];
+let state={mode:"quest",screen:"home",topic:null,seg:"y4",qs:[],idx:0,score:0,results:[],roundTotal:0,done:{}};
 const $=sel=>document.querySelector(sel);
-const app=$("#app");
-const shuffle=n=>{const a=[...Array(n).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+const app=document.getElementById("app");
+const shuffle=n=>{const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const sampleQ=(arr,k)=>shuffle(arr.length).slice(0,Math.min(k,arr.length)).map(i=>arr[i]);
+
+function setMode(m){state.mode=m;home();}
 
 function home(){
- state={...state, screen:"home", topic:null};
- let cards=TOPICS.map(t=>{
-  const d=state.done[t.id];
+ state.screen="home";state.topic=null;
+ const chips=LEVELS.map(l=>{const sel=state.mode===l[0]?" sel":"";const cls=l[0]==="quest"?"g":(+l[0]>=4?"p":"t");
+  return `<button class="lvl ${cls}${sel}" onclick="setMode('${l[0]}')">${l[1]}</button>`;}).join("");
+ const desc=LEVELS.find(l=>l[0]===state.mode)[2];
+ const cards=TOPICS.map(t=>{const d=state.done[t.id+"|"+state.mode];
   return `<button class="topic" onclick="startTopic('${t.id}')">
    <div class="emoji">${t.emoji}</div><h3>${t.name}</h3><p>${t.blurb}</p>
    ${d?`<div class="done">Best: ${d.score} / ${d.total} ${"★".repeat(d.stars)}</div>`:""}
   </button>`;}).join("");
  app.innerHTML=`
-  <div class="topbar"><h1>Grammar Quest</h1><span class="pill gold">LEVEL UP GAME</span></div>
-  <p class="intro">Pick a topic and warm up in the <b style="color:var(--t-pri)">Year 4 zone</b>.
-  Get through the warm-up and you unlock the <b style="color:var(--p-pri)">Year 5 Level Up round</b>.
-  Every answer comes with a why, so even a miss makes you stronger.</p>
+  <div class="topbar"><h1>Grammar Quest</h1><span class="pill gold">208 QUESTIONS</span></div>
+  <p class="intro">Pick your level, then pick a topic. <b>Quest</b> gives you the classic run:
+  warm up in the <b style="color:var(--t-pri)">Year 4 zone</b>, then unlock the
+  <b style="color:var(--p-pri)">Year 5 Level Up round</b>. Or jump straight to any level, even
+  <b style="color:var(--p-pri)">Level 5</b>, if you are feeling brave. Every round deals a fresh hand of questions.</p>
+  <div class="lvlrow">${chips}</div>
+  <p class="lvldesc">${desc}</p>
   <div class="grid">${cards}</div>
-  <p class="footer-note">Topics follow the unit list of Wren &amp; Martin, Primary School English Grammar &amp; Composition. All questions written fresh for this course.</p>`;
+  <p class="footer-note">Topics follow the unit list of Wren &amp; Martin, Primary School English Grammar &amp; Composition. All 208 questions written fresh for this course.</p>`;
 }
 
 function startTopic(id){
  const t=TOPICS.find(x=>x.id===id);
- state={...state, screen:"quiz", topic:t, level:"y4", idx:0, score:0, results:[], order:shuffle(t.y4.length)};
+ state.topic=t;state.score=0;state.results=[];state.idx=0;state.screen="quiz";
+ if(state.mode==="quest"){
+  state.seg="y4";state.qs=sampleQ(t.y4,8);
+  state.roundTotal=state.qs.length+Math.min(5,t.y5.length);
+ }else{
+  const L=+state.mode,all=t.y4.concat(t.y5);
+  let pool=all.filter(q=>q.d===L);
+  if(pool.length<6){const near=all.filter(q=>q.d===(L>1?L-1:2));pool=pool.concat(sampleQ(near,6-pool.length));}
+  state.seg="lvl";state.qs=sampleQ(pool,8);
+  state.roundTotal=state.qs.length;
+ }
  question();
 }
 
+function segInfo(){
+ if(state.seg==="y4")return{purple:false,label:"YEAR 4 ZONE"};
+ if(state.seg==="y5")return{purple:true,label:"YEAR 5 LEVEL UP"};
+ const L=+state.mode;return{purple:L>=4,label:"LEVEL "+L};
+}
+
 function question(){
- const t=state.topic, lv=state.level, bank=t[lv], q=bank[state.order[state.idx]];
- const purple=lv==="y5";
+ const t=state.topic,q=state.qs[state.idx],info=segInfo();
  const dots=state.results.map(r=>`<span class="dot ${r?"right":"wrong"}"></span>`).join("")+
-  bank.slice(state.results.length).map((_,i)=>`<span class="dot ${i===0?("on"+(purple?" purple":"")):""}"></span>`).join("");
+  state.qs.slice(state.results.length).map((_,i)=>`<span class="dot ${i===0?("on"+(info.purple?" purple":"")):""}"></span>`).join("");
  app.innerHTML=`
-  <div class="topbar"><h1 style="color:${purple?"var(--p-pri)":"var(--t-pri)"}">${t.emoji} ${t.name}</h1>
-   <span class="pill ${purple?"purple":""}">${purple?"YEAR 5 LEVEL UP":"YEAR 4 ZONE"}</span></div>
+  <div class="topbar"><h1 style="color:${info.purple?"var(--p-pri)":"var(--t-pri)"}">${t.emoji} ${t.name}</h1>
+   <span class="pill ${info.purple?"purple":""}">${info.label}</span></div>
   <div class="progress">${dots}</div>
-  <div class="card ${purple?"purple":""}">
-   <div class="qhead ${purple?"purple":"teal"}">Question ${state.idx+1} of ${bank.length}</div>
+  <div class="card ${info.purple?"purple":""}">
+   <div class="qhead ${info.purple?"purple":"teal"}">Question ${state.idx+1} of ${state.qs.length}</div>
    <div class="question">${q.q}</div>
    <div class="opts">${q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="pick(${i})">${o}</button>`).join("")}</div>
    <div class="why" id="why"></div>
-   <div class="center"><button class="btn ${purple?"purple":""} hidden" id="next" onclick="next()">Next</button></div>
+   <div class="center"><button class="btn ${info.purple?"purple":""} hidden" id="next" onclick="next()">Next</button></div>
   </div>
   <div class="center"><button class="btn ghost" onclick="home()">Back to topics</button></div>`;
 }
 
 function pick(i){
- const t=state.topic, bank=t[state.level], q=bank[state.order[state.idx]];
- const right=i===q.a;
+ const q=state.qs[state.idx],right=i===q.a;
  if(right)state.score++;
  state.results.push(right);
- q.o.forEach((_,k)=>{const b=$("#opt"+k); b.disabled=true;
+ q.o.forEach((_,k)=>{const b=$("#opt"+k);b.disabled=true;
   if(k===i)b.classList.add(right?"picked-right":"picked-wrong");
   if(k===q.a&&!right)b.classList.add("reveal");});
  const why=$("#why");
@@ -356,44 +389,43 @@ function pick(i){
 }
 
 function next(){
- const bank=state.topic[state.level];
  state.idx++;
- if(state.idx<bank.length){question(); return;}
- if(state.level==="y4"){levelUp(); return;}
+ if(state.idx<state.qs.length){question();return;}
+ if(state.seg==="y4"){levelUp();return;}
  finish();
 }
 
 function levelUp(){
- const t=state.topic;
  app.innerHTML=`
   <div class="levelup">
    <div class="stars">★ ★ ★</div>
    <h2>LEVEL UP!</h2>
-   <p>Warm-up done: ${state.score} out of ${t.y4.length}. Now entering the Year 5 zone.</p>
+   <p>Warm-up done: ${state.score} out of ${state.qs.length}. Now entering the Year 5 zone.</p>
    <p>These ones are harder on purpose. Brave attempts only!</p>
    <button class="btn purple" onclick="startY5()">Bring it on</button>
   </div>`;
 }
 
 function startY5(){
- state.level="y5"; state.idx=0; state.results=[]; state.order=shuffle(state.topic.y5.length);
+ state.seg="y5";state.qs=sampleQ(state.topic.y5,5);state.idx=0;state.results=[];
  question();
 }
 
 function finish(){
- const t=state.topic, total=t.y4.length+t.y5.length, s=state.score;
- const stars=s===total?3:(s>=total-2?2:1);
+ const t=state.topic,total=state.roundTotal,s=state.score;
+ const stars=s===total?3:(s>=total-3?2:1);
  const msg=s===total?"Perfect round! You did not just answer, you OWNED it.":
-  s>=total-2?"So close to perfect. One more run and it is yours.":
+  s>=total-3?"So close to perfect. One more run and it is yours.":
   s>=Math.ceil(total/2)?"Solid work! Read the whys, then have another crack.":
   "Every miss taught you something. That is exactly how champions train. Go again!";
- const prev=state.done[t.id];
- if(!prev||s>prev.score)state.done[t.id]={score:s,total:total,stars:stars};
+ const key=t.id+"|"+state.mode,prev=state.done[key];
+ if(!prev||s>prev.score)state.done[key]={score:s,total:total,stars:stars};
+ const modeName=state.mode==="quest"?"Quest":"Level "+state.mode;
  app.innerHTML=`
   <div class="card purple center" style="padding:44px 24px;">
    <div class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</div>
    <div class="score-big">${s} / ${total}</div>
-   <h2 style="color:var(--p-pri); margin:10px 0;">${t.emoji} ${t.name} complete</h2>
+   <h2 style="color:var(--p-pri); margin:10px 0;">${t.emoji} ${t.name}: ${modeName} complete</h2>
    <p style="max-width:480px; margin:0 auto;">${msg}</p>
    <div>
     <button class="btn purple" onclick="startTopic('${t.id}')">Play again</button>
@@ -403,5 +435,13 @@ function finish(){
 }
 home();
 </script>
+<style>
+.lvlrow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px;}
+.lvl{border:2px solid #CFD8DC;background:#FFFFFF;border-radius:999px;padding:9px 18px;font-family:'Fredoka','Comic Sans MS',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;color:#546E7A;transition:transform .1s;}
+.lvl:hover{transform:translateY(-2px);}
+.lvl.t{color:var(--t-pri);} .lvl.p{color:var(--p-pri);} .lvl.g{color:#B26A00;}
+.lvl.sel{border-color:var(--p-acc);background:#FFF8E1;}
+.lvldesc{font-size:.9rem;color:#78909C;margin-bottom:16px;}
+</style>
 </body>
 </html>
